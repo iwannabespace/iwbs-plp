@@ -12,7 +12,7 @@ namespace iwbs
             Line();
             ~Line();
             void pushToken(const Token& token);
-            void setLineNumber(unsigned int lineNumber);
+            void setLineNumber(size_t lineNumber);
             size_t getLineNumber() const;
             size_t getNumberOfTokens() const;
             bool contains(const Token& token) const;

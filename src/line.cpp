@@ -16,7 +16,7 @@ namespace iwbs
         tokens.push_back(token);
     }
 
-    void Line::setLineNumber(unsigned int lineNumber)
+    void Line::setLineNumber(size_t lineNumber)
     {
         this->lineNumber = lineNumber;
     }
@@ -69,7 +69,7 @@ namespace iwbs
 
     Token* Line::end()
     {
-        return nullptr;
+        return &tokens[tokens.size()];
     }
 
     const Token* Line::begin() const
@@ -79,7 +79,7 @@ namespace iwbs
     
     const Token* Line::end() const
     {
-        return nullptr;
+        return &tokens[tokens.size()];
     }
 
     std::ostream& operator<<(std::ostream& os, const Line& line)

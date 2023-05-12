@@ -21,6 +21,11 @@ namespace iwbs
         this->lineNumber = lineNumber;
     }
 
+    void Line::setError(const Error& error)
+    {
+        this->error = error;
+    }
+
     size_t Line::getLineNumber() const
     {
         return lineNumber;
@@ -30,14 +35,50 @@ namespace iwbs
     {
         return tokens.size();
     }
+    
+    const Error& Line::getError() const
+    {
+        return error;
+    }
 
     bool Line::contains(const Token& token) const
     {
         for (const Token& t : tokens)
-            if (t.getValue() == token.getValue())
+            if (t.getValue() == token.getValue() && t.getType() == token.getType())
                 return true;
 
         return false;
+    }
+
+    bool Line::contains(const std::string& tokenValue) const
+    {
+        for (const Token& t : tokens)
+            if (t.getValue() == tokenValue)
+                return true;
+
+        return false;
+    }
+
+    int32_t Line::count(const Token& token) const
+    {
+        int32_t result = 0;
+
+        for (const Token& t : tokens)
+            if (t == token)
+                result++;
+
+        return result;
+    }
+    
+    int32_t Line::count(const std::string& tokenValue) const
+    {
+        int32_t result = 0;
+
+        for (const Token& t : tokens)
+            if (t.getValue() == tokenValue)
+                result++;
+
+        return result;
     }
 
     void Line::clear()

@@ -55,4 +55,31 @@ namespace iwbs
     {
         return !(*this == rhs);
     }
+
+    Variable::Type Variable::Resolve(const std::string& value)
+    {
+        if (value == "integer")
+            return Type::Integer;
+        
+        if (value == "float")
+            return Type::Float;
+        
+        if (value == "string")
+            return Type::String;
+        
+        if (value == "boolean")
+            return Type::Boolean;
+        
+        return Type::Unknown;
+    }
+
+    bool Variable::IsValidVariableName(const std::string& name)
+    {
+        bool startsWithAlpha = std::isalpha(name[0]) || name[0] == '_';
+        bool namingValid = std::all_of(name.begin() + 1, name.end(), [](char c) {
+             return std::isalpha(c) || std::isdigit(c) || c == '_'; 
+        });
+
+        return startsWithAlpha && namingValid;
+    }
 }

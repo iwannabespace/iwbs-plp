@@ -2,6 +2,7 @@
 #define LINE_HPP
 
 #include "token.hpp"
+#include "error.hpp"
 #include <vector>
 
 namespace iwbs
@@ -13,9 +14,14 @@ namespace iwbs
             ~Line();
             void pushToken(const Token& token);
             void setLineNumber(size_t lineNumber);
+            void setError(const Error& error);
             size_t getLineNumber() const;
             size_t getNumberOfTokens() const;
+            const Error& getError() const;
             bool contains(const Token& token) const;
+            bool contains(const std::string& tokenValue) const;
+            int32_t count(const Token& token) const;
+            int32_t count(const std::string& tokenValue) const;
             void clear();
             const Token& operator[](size_t index) const;
             Token& operator[](size_t index);
@@ -29,6 +35,7 @@ namespace iwbs
         private:
             std::vector<Token> tokens;
             size_t lineNumber;
+            Error error;
     };
 }
 

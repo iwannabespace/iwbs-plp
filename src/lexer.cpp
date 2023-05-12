@@ -58,7 +58,7 @@ namespace iwbs
                     if (lineStr[i] == ' ' && !numberOfQuotes)
                     {
                         if (lineToken.length() != 1) // This is checked because, if there is an empty char after a semicolon this code block would push an empty token to the line  
-                            line.pushToken(Token(lineToken.substr(0, lineToken.length() - 1), Token::Type::Unknown));
+                            line.pushToken(Token(lineToken.substr(0, lineToken.length() - 1)));
                         
                         lineToken.clear();
                     }
@@ -66,7 +66,7 @@ namespace iwbs
                     if (lineStr[i] == ';' && !numberOfQuotes)
                     {
                         if (lineToken.length() != 1)
-                            line.pushToken(Token(lineToken.substr(0, lineToken.length() - 1), Token::Type::Unknown));
+                            line.pushToken(Token(lineToken.substr(0, lineToken.length() - 1)));
 
                         line.pushToken(Token(";", Token::Type::Semicolon));
                         lineToken.clear();
@@ -79,6 +79,7 @@ namespace iwbs
             }
 
             file.close();
+            analyze();
         }
     }
 
@@ -126,12 +127,55 @@ namespace iwbs
     {
         for (Line& line : lines)
         {
-            if (line.contains(Token("=", Token::Type::Unknown)))
+            int32_t numberOfSemicolons = line.count(Token(";", Token::Type::Semicolon));
+            size_t lineNumber = line.getLineNumber();
 
-            for (Token& token : line) 
+            if (numberOfSemicolons != 1)
+            {   
+                line.setError(Error(numberOfSemicolons < 1 ? "Missing semicolon error" : "Multiple semicolons error", lineNumber));
+                continue;
+            }
+            
+            else
             {
-                if (token.getType() == Token::Type::Unknown)
+                if (line.contains("="))
                 {
+                    if (line.getNumberOfTokens() < 5)
+                    {
+                        
+                    }
+
+                    if (line.count("=") > 1)
+                    {    
+                        line.setError(Error("Multiple assignment operator error", lineNumber));
+                        continue;
+                    }
+
+                    if (line[2] != Token("="))
+                    {
+                        line.setError(Error("Assignment operator is not in place error", lineNumber));
+                        continue;
+                    }
+
+                    Variable::Type type = Variable::Resolve(line[0].getValue());
+                    if (type != Variable::Type::Unknown)
+                        line[0].setType(Token::Type::VariableType);
+                    
+                    else
+                    {
+                        line.setError(Error("Unknown token error", lineNumber));
+                        continue;
+                    }
+
+                    bool isValidName = Variable::IsValidVariableName(line[1].getValue());
+                    if (isValidName)
+                        line[1].setType(Token::Type::VariableName);
+                    
+                    else
+                    {
+                        line.setError(Error("Incorrect variable naming error", lineNumber));
+                        continue;
+                    }
 
                 }
             }
@@ -161,57 +205,3 @@ namespace iwbs
         return result;
     }
 }
-
-/*
-
-std::istringstream stream(lineStr);
-                std::string lineToken;
-                std::string strValueHolder;
-                int numberOfQuotes = 0;
-
-                while (stream >> lineToken)
-                {
-                    if (lineToken.find("\"") != std::string::npos)
-                        numberOfQuotes++;
-                    
-                    if (numberOfQuotes == 0)
-                    {
-                        auto semicolonTokens = split(lineToken, ";");
-
-                        if (!semicolonTokens.empty())
-                        {
-                            for (const std::string& semicolonToken : semicolonTokens)
-                            {
-                                if (!semicolonToken.empty())
-                                {
-                                    line.pushToken(Token(semicolonToken, Token::Type::Unknown));
-                                    line.pushToken(Token(";", Token::Type::Semicolon));
-                                }
-
-                                else
-                                    line.pushToken(Token(";", Token::Type::Semicolon));
-                            }
-
-                            continue;
-                        }
-                        
-                        else
-                            line.pushToken(Token(lineToken, Token::Type::Unknown));
-                    }
-
-                    else if (numberOfQuotes == 1)
-                        strValueHolder += lineToken;
-
-                    else if (numberOfQuotes == 2)
-                    {
-                        strValueHolder += lineToken;
-                        numberOfQuotes = 0;
-                        line.pushToken(Token(strValueHolder, Token::Type::StringValue));
-                    }
-                }
-                
-                line.setLineNumber(number++);
-                lines.push_back(line);
-                line.clear();
-
-*/

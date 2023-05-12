@@ -7,6 +7,11 @@ namespace iwbs
     {
     }
 
+    Token::Token(const std::string& value)
+        : value(value), type(Token::Type::Unknown)
+    {
+    }
+
     Token::Token(const std::string& value, Type type)
         : value(value), type(type)
     {
@@ -34,6 +39,16 @@ namespace iwbs
     Token::Type Token::getType() const
     {
         return type;
+    }
+
+    bool Token::operator==(const Token& rhs) const
+    {
+        return value == rhs.value && type == rhs.type;
+    }
+
+    bool Token::operator!=(const Token& rhs) const
+    {
+        return !(*this == rhs);
     }
 
     std::ostream& operator<<(std::ostream& os, const Token& token)

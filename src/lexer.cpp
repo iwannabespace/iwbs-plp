@@ -179,7 +179,7 @@ namespace iwbs
 
     std::string Lexer::getRange(size_t startIndex, uint8_t endChar, const std::string& str) const
     {
-        return str.substr(startIndex, str.find(endChar, startIndex + 1) - (startIndex - 2));
+        return str.substr(startIndex, str.find(endChar, startIndex + 1) - (startIndex - 1));
     }
 
     std::vector<std::string> Lexer::split(const std::string& str, const std::string& delim) const

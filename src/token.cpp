@@ -63,29 +63,17 @@ namespace iwbs
             case Token::Type::Unknown:
                 os << "Unknown";
                 break;
-            case Token::Type::VariableType:
-                os << "VariableType";
+            case Token::Type::Type:
+                os << "Type";
                 break;
-            case Token::Type::VariableName:
-                os << "VariableName";
+            case Token::Type::Identifier:
+                os << "Identifier";
                 break;
-            case Token::Type::IntegerValue:
-                os << "IntegerValue";
-                break;
-            case Token::Type::FloatValue:
-                os << "FloatValue";
-                break;
-            case Token::Type::BooleanValue:
-                os << "BooleanValue";
-                break;
-            case Token::Type::StringValue:
-                os << "StringValue";
+            case Token::Type::Constant:
+                os << "Constant";
                 break;
             case Token::Type::Operator:
                 os << "Operator";
-                break;
-            case Token::Type::Function:
-                os << "Function";
                 break;
             case Token::Type::Semicolon:
                 os << "Semicolon";

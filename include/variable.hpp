@@ -5,6 +5,7 @@
 
 namespace iwbs
 {
+    //template<typename T>
     class Variable
     {
         public:
@@ -36,6 +37,7 @@ namespace iwbs
             Type type;
             std::string name;
             std::string value;
+            //T value;
     };
 }
 

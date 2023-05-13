@@ -20,8 +20,8 @@ namespace iwbs
             const Error& getError() const;
             bool contains(const Token& token) const;
             bool contains(const std::string& tokenValue) const;
-            int32_t count(const Token& token) const;
-            int32_t count(const std::string& tokenValue) const;
+            uint32_t count(const Token& token) const;
+            uint32_t count(const std::string& tokenValue) const;
             void clear();
             const Token& operator[](size_t index) const;
             Token& operator[](size_t index);

@@ -6,94 +6,40 @@
 
 namespace iwbs
 {
-    Lexer::Lexer()
-        : filename("")
+    Lexer::Lexer(const FileReader& reader)
+        : reader(reader)
     {
-    }
-
-    Lexer::Lexer(const std::string& filename)
-        : filename(filename)
-    {
-        if (!std::filesystem::exists(filename))
-        {    
-            this->filename.clear();
-            throw "File couldn't be found!";
-        }
     }
 
     Lexer::~Lexer()
     {
     }
 
-    void Lexer::read()
+    void Lexer::tokenize()
     {
-        if (!filename.empty())
-        {
-            std::fstream file;
-            std::string lineStr;
-            Line line;
-            size_t number = 1;
-
-            file.open(filename, std::ios::in);
-            
-            while (std::getline(file, lineStr))
-            {
-                std::string lineToken;
-                int numberOfQuotes = 0;
-
-                for (size_t i = 0; i < lineStr.length(); i++)
-                {
-                    lineToken += lineStr[i];
-
-                    if (lineStr[i] == '\"')
-                        numberOfQuotes++;
-
-                    if (numberOfQuotes == 2)
-                    {
-                        line.pushToken(Token(lineToken, Token::Type::StringValue));
-                        lineToken.clear();
-                        numberOfQuotes = 0;
-                    }
-
-                    if (lineStr[i] == ' ' && !numberOfQuotes)
-                    {
-                        if (lineToken.length() != 1) // This is checked because, if there is an empty char after a semicolon this code block would push an empty token to the line  
-                            line.pushToken(Token(lineToken.substr(0, lineToken.length() - 1)));
-                        
-                        lineToken.clear();
-                    }
-
-                    if (lineStr[i] == ';' && !numberOfQuotes)
-                    {
-                        if (lineToken.length() != 1)
-                            line.pushToken(Token(lineToken.substr(0, lineToken.length() - 1)));
-
-                        line.pushToken(Token(";", Token::Type::Semicolon));
-                        lineToken.clear();
-                    }
-                }
-
-                line.setLineNumber(number++);
-                lines.push_back(line);
-                line.clear();
-            }
-
-            file.close();
-            analyze();
+        try {
+            reader.read();
+        } catch (const std::string& exception) {
+            std::cout << exception << std::endl;
+            return;
         }
+
+        auto allLines = reader.data();
+        size_t number = 1;
+        
+        for (const std::string& lineStr : allLines)
+        {
+            Line line = extractTokens(lineStr);
+            line.setLineNumber(number++);
+            lines.push_back(line);
+        }
+
+        //analyze();
     }
 
-    void Lexer::setFile(const std::string& filename)
+    const std::string& Lexer::filename() const
     {
-        if (!std::filesystem::exists(filename))
-            throw "File couldn't be found!";
-
-        this->filename = filename;
-    }
-
-    const std::string& Lexer::getFile() const
-    {
-        return filename;
+        return reader.getFile();
     }
 
     size_t Lexer::getNumberOfLines() const
@@ -104,7 +50,6 @@ namespace iwbs
     void Lexer::clear()
     {
         lines.clear();
-        filename.clear();
     }
 
     const Line& Lexer::operator[](size_t index) const
@@ -159,7 +104,7 @@ namespace iwbs
 
                     Variable::Type type = Variable::Resolve(line[0].getValue());
                     if (type != Variable::Type::Unknown)
-                        line[0].setType(Token::Type::VariableType);
+                        line[0].setType(Token::Type::Type);
                     
                     else
                     {
@@ -169,7 +114,7 @@ namespace iwbs
 
                     bool isValidName = Variable::IsValidVariableName(line[1].getValue());
                     if (isValidName)
-                        line[1].setType(Token::Type::VariableName);
+                        line[1].setType(Token::Type::Identifier);
                     
                     else
                     {
@@ -180,6 +125,69 @@ namespace iwbs
                 }
             }
         }
+    }
+
+    Line Lexer::extractTokens(const std::string& str) const
+    {
+        iwbs::Line line;
+
+        for (size_t i = 0; i < str.length(); i++)
+        {
+            char current_char = str[i];
+
+            if (std::isalnum(current_char))
+            {
+                std::string value{current_char};
+
+                for (++i; std::isalnum(str[i]) && i < str.length(); i++)
+                {
+                    current_char = str[i];
+                    value += current_char;
+                }
+                
+                i--;
+                line.pushToken(iwbs::Token(value, iwbs::Token::Type::Constant));
+            }
+
+            else if (current_char == '"')
+            {
+                std::string value = getRange(i, '"', str);
+                i += (value.length() - 1);
+                line.pushToken(iwbs::Token(value, iwbs::Token::Type::Constant));
+            }
+
+            else if (current_char == ';')
+                line.pushToken(iwbs::Token(";", iwbs::Token::Type::Semicolon));
+
+            else if (!std::isspace(current_char))
+            {
+                std::string value{current_char};
+
+                for (++i; !std::isspace(str[i]) && str[i] != ';' && i < str.length(); i++)
+                {
+                    current_char = str[i];
+                    value += current_char;
+                }
+
+                i--;
+                line.pushToken(iwbs::Token(value, iwbs::Token::Type::Unknown));
+            }
+        }
+
+        return line;
+    }
+
+    std::string Lexer::getRange(size_t startIndex, uint8_t endChar, const std::string& str) const
+    {
+        std::string result{str.at(startIndex)};
+        size_t i = startIndex + 1;
+
+        for (; i < str.length() && str[i] != endChar; i++)
+            result += str[i];
+
+        str[i] == endChar ? result += endChar : 0;
+
+        return result;
     }
 
     std::vector<std::string> Lexer::split(const std::string& str, const std::string& delim) const

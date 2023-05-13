@@ -2,6 +2,7 @@
 #define PARSER_HPP
 
 #include "line.hpp"
+#include "file_reader.hpp"
 #include "variable_container.hpp"
 
 namespace iwbs
@@ -9,22 +10,22 @@ namespace iwbs
     class Lexer
     {
         public:
-            Lexer();
-            Lexer(const std::string& filename);
+            Lexer(const FileReader& reader);
             ~Lexer();
-            void read();
-            void setFile(const std::string& filename);
-            const std::string& getFile() const;
+            void tokenize();
+            const std::string& filename() const;
             size_t getNumberOfLines() const;
             void clear();
             const Line& operator[](size_t index) const;
             Line& operator[](size_t index);
         private:    
             void analyze();
+            Line extractTokens(const std::string& str) const;
+            std::string getRange(size_t startIndex, uint8_t endChar, const std::string& str) const;
             std::vector<std::string> split(const std::string& str, const std::string& delim) const;
         private:
-            std::string filename;
             std::vector<Line> lines;
+            FileReader reader;
             VariableContainer container;
     };
 }

@@ -1,11 +1,12 @@
 #include <iostream>
+#include "include/file_reader.hpp"
 #include "include/lexer.hpp"
 
 int main()
 {
-    iwbs::Lexer lexer("main.iwbs");
+    iwbs::Lexer lexer(iwbs::FileReader("main.iwbs"));
 
-    lexer.read();
+    lexer.tokenize();
 
     for (size_t i = 0; i < lexer.getNumberOfLines(); i++)
     {

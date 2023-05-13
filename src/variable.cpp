@@ -1,4 +1,5 @@
 #include "../include/variable.hpp"
+#include "../include/keywords.hpp"
 
 namespace iwbs
 {
@@ -76,10 +77,15 @@ namespace iwbs
     bool Variable::IsValidVariableName(const std::string& name)
     {
         bool startsWithAlpha = std::isalpha(name[0]) || name[0] == '_';
+
         bool namingValid = std::all_of(name.begin() + 1, name.end(), [](char c) {
              return std::isalpha(c) || std::isdigit(c) || c == '_'; 
         });
 
-        return startsWithAlpha && namingValid;
+        bool keyword = std::any_of(KEYWORDS.begin(), KEYWORDS.end(), [&name](const std::string& keyword) {
+            return keyword == name;
+        });
+
+        return startsWithAlpha && namingValid && !keyword;
     }
 }

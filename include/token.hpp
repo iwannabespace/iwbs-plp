@@ -12,14 +12,10 @@ namespace iwbs
             enum class Type
             {
                 Unknown,
-                VariableType,
-                VariableName,
-                IntegerValue,
-                FloatValue,
-                BooleanValue,
-                StringValue,
+                Type,
+                Identifier,
+                Constant,
                 Operator,
-                Function,
                 Semicolon,
             };
         public:

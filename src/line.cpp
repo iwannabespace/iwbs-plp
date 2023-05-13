@@ -59,7 +59,7 @@ namespace iwbs
         return false;
     }
 
-    int32_t Line::count(const Token& token) const
+    uint32_t Line::count(const Token& token) const
     {
         int32_t result = 0;
 
@@ -70,7 +70,7 @@ namespace iwbs
         return result;
     }
     
-    int32_t Line::count(const std::string& tokenValue) const
+    uint32_t Line::count(const std::string& tokenValue) const
     {
         int32_t result = 0;
 

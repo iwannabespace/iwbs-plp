@@ -5,7 +5,6 @@
 
 namespace iwbs
 {
-    //template<typename T>
     class Variable
     {
         public:
@@ -15,6 +14,7 @@ namespace iwbs
                 Float,
                 String,
                 Boolean,
+                Void,
                 Unknown
             };
         public:
@@ -29,15 +29,10 @@ namespace iwbs
             const std::string& getValue() const;
             bool operator==(const Variable& rhs) const;
             bool operator!=(const Variable& rhs) const;
-        public:
-            // Resolves the type of given value and returns it
-            static Type Resolve(const std::string& value);
-            static bool IsValidVariableName(const std::string& name);
         private:
             Type type;
             std::string name;
             std::string value;
-            //T value;
     };
 }
 

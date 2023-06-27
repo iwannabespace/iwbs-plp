@@ -1,4 +1,5 @@
 #include "../include/file_reader.hpp"
+#include <iostream>
 #include <fstream>
 
 namespace iwbs
@@ -18,7 +19,12 @@ namespace iwbs
 
     void FileReader::read()
     {
-        if (!filename.empty() && std::filesystem::exists(filename))
+        std::filesystem::path path = filename;
+        
+        if (path.extension().string() != ".iwbs")
+            throw std::string("File '" + filename + "' is not an 'iwbs' file");
+
+        if (std::filesystem::exists(filename))
         {
             std::fstream file;
             std::string line;

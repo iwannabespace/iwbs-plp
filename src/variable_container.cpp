@@ -6,40 +6,38 @@ namespace iwbs
     {
     }
 
-    VariableContainer::VariableContainer(const std::vector<Variable>& variables)
-        : variables(variables)
-    {
-    }
-
     VariableContainer::~VariableContainer()
     {
     }
 
-    bool VariableContainer::pushVariable(const Variable& variable)
+    size_t VariableContainer::size() const
     {
-        for (const Variable& v : variables)
-            if (v == variable)
+        return variables.size();
+    }
+
+    bool VariableContainer::pushVariable(const Variable &variable)
+    {
+        for (size_t i = 0; i < variables.size(); i++)
+            if (variables[i] == variable)
                 return false;
-        
+
         variables.push_back(variable);
         return true;
     }
 
-    Variable& VariableContainer::operator[](const std::string& name)
+    Variable &VariableContainer::operator[](size_t index)
     {
-        for (Variable& variable : variables)
-            if (variable.getName() == name)
-                return variable;
+        if (index < 0 || index >= variables.size())
+            throw "Index out of bounds for VariableContainer::variables container";
         
-        throw "Variable couldn't be found";
+        return variables[index];
     }
 
-    const Variable& VariableContainer::operator[](const std::string& name) const
+    const Variable &VariableContainer::operator[](size_t index) const
     {
-        for (const Variable& variable : variables)
-            if (variable.getName() == name)
-                return variable;
+        if (index < 0 || index >= variables.size())
+            throw "Index out of bounds for VariableContainer::variables container";
         
-        throw "Variable couldn't be found";
+        return variables[index];
     }
 }

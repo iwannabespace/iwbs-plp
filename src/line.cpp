@@ -41,6 +41,11 @@ namespace iwbs
         return error;
     }
 
+    bool Line::empty() const
+    {
+        return tokens.empty();
+    }
+
     bool Line::contains(const Token& token) const
     {
         for (const Token& t : tokens)

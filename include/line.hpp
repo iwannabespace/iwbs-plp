@@ -18,6 +18,7 @@ namespace iwbs
             size_t getLineNumber() const;
             size_t getNumberOfTokens() const;
             const Error& getError() const;
+            bool empty() const;
             bool contains(const Token& token) const;
             bool contains(const std::string& tokenValue) const;
             uint32_t count(const Token& token) const;

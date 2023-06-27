@@ -10,11 +10,11 @@ namespace iwbs
     {
         public:
             VariableContainer();
-            VariableContainer(const std::vector<Variable>& variables);
             ~VariableContainer();
+            size_t size() const;
             bool pushVariable(const Variable& variable);
-            Variable& operator[](const std::string& name);
-            const Variable& operator[](const std::string& name) const;
+            Variable& operator[](size_t index);
+            const Variable& operator[](size_t index) const;
         private:
             std::vector<Variable> variables;
     };

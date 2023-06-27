@@ -1,4 +1,4 @@
-string testDegisken = "merhaba emin ";
-integer degisken = 100;
-haha a = 10.5;
-string s = ; " Merhaba Dunya Ben    Ertu  ";
+float f = -20.5;
+integer i = 100;
+string s = "test degisken arkadas";
+boolean b = false;

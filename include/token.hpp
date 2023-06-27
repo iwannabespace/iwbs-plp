@@ -12,9 +12,18 @@ namespace iwbs
             enum class Type
             {
                 Unknown,
-                Type,
+                VariableType,
                 Identifier,
-                Constant,
+                IConstant,
+                FConstant,
+                SConstant,
+                BConstant,
+                OParan,
+                CParan,
+                OCurly,
+                CCurly,
+                OBracket,
+                CBracket,
                 Operator,
                 Semicolon,
             };

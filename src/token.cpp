@@ -63,14 +63,41 @@ namespace iwbs
             case Token::Type::Unknown:
                 os << "Unknown";
                 break;
-            case Token::Type::Type:
-                os << "Type";
+            case Token::Type::VariableType:
+                os << "VariableType";
                 break;
             case Token::Type::Identifier:
                 os << "Identifier";
                 break;
-            case Token::Type::Constant:
-                os << "Constant";
+            case Token::Type::IConstant:
+                os << "IConstant";
+                break;
+            case Token::Type::FConstant:
+                os << "FConstant";
+                break;
+            case Token::Type::SConstant:
+                os << "SConstant";
+                break;
+            case Token::Type::BConstant:
+                os << "BConstant";
+                break;
+            case Token::Type::OParan:
+                os << "OParan";
+                break;
+            case Token::Type::CParan:
+                os << "CParan";
+                break;
+            case Token::Type::OCurly:
+                os << "OCurly";
+                break;
+            case Token::Type::CCurly:
+                os << "CCurly";
+                break;
+            case Token::Type::OBracket:
+                os << "OBracket";
+                break;
+            case Token::Type::CBracket:
+                os << "CBracket";
                 break;
             case Token::Type::Operator:
                 os << "Operator";

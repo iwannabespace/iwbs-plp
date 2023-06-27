@@ -4,26 +4,22 @@
 #include <vector>
 #include <string>
 
-namespace iwbs
+namespace iwbs::Keywords
 {
     const std::vector<std::string> KEYWORDS = {
         "integer",
         "float",
         "string",
         "boolean",
+        "void",
         "if",
         "else if",
         "else",
         "function",
+        "return",
+        "returns",
         "as",
     };
-
-    bool IsKeyword(const std::string& str)
-    {
-        return std::any_of(KEYWORDS.begin(), KEYWORDS.end(), [&str](const std::string& keyword) {
-            return str == keyword;
-        });
-    }
 }
 
 #endif

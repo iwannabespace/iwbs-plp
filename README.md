@@ -1,2 +1,3 @@
 # IWBS Programming Language
-Test
+IWBS - iwannabespace programming language is a project to learn about
+creating a programming language.

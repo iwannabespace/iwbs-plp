@@ -7,6 +7,8 @@ namespace iwbs
     Lexer::Lexer(const FileReader& reader)
         : reader(reader)
     {
+        // Global Scope
+        //scopes.push_back(Scope());
     }
 
     Lexer::~Lexer()
@@ -23,12 +25,13 @@ namespace iwbs
         }
 
         auto allLines = reader.data();
-        size_t number = 1;
+        size_t lineNumber = 1;
+        //size_t currentScope = 0;
         
         for (const std::string& lineStr : allLines)
         {
             Line line = extractTokens(lineStr);
-            line.setLineNumber(number++);
+            line.setLineNumber(lineNumber++);
             lines.push_back(line);
         }
     }

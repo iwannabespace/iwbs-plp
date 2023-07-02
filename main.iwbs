@@ -1,4 +1,2 @@
-float f = -20.5;
-integer i = 100;
-string s = "test degisken arkadas";
-boolean b = false;
+integer i = 100a;
+integer b = 0;

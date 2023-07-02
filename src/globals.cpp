@@ -96,11 +96,46 @@ namespace iwbs::Globals
         return Token::Type::Identifier;
     }
 
-    std::variant<int64_t, bool> ConvertToInteger(const std::string& str)
+    std::variant<int64_t, Error> ConvertToInteger(const std::string& str)
     {
-        bool convertable = (str.front() == '+' || str.front() == '-' || std::isdigit(str.front()));
+        bool isInteger = IsIntegerConstant(str);
 
-        return convertable ? std::stoll(str) : false;
+        if (isInteger)
+            return std::stoll(str);
+        else 
+            return Error();
+    }
+
+    // Test this
+    std::variant<double, Error> ConvertToFloat(const std::string& str)
+    {
+        bool isFloat = IsFloatConstant(str);
+
+        if (isFloat)
+            return std::stod(str);
+        else
+            return Error();
+    }
+
+    std::variant<std::string, Error> ConvertToString(const std::string& str)
+    {
+    }
+
+    // Test this
+    std::variant<bool, Error> ConvertToBoolean(const std::string& str)
+    {
+        bool isBoolean = IsBooleanConstant(str);
+
+        if (isBoolean)
+            return str == "true";
+        else
+            return Error();
+    }
+
+    bool IsConstant(const std::string& str)
+    {
+        return IsIntegerConstant(str) || IsFloatConstant(str) || 
+                IsStringConstant(str) || IsBooleanConstant(str);
     }
 
     bool IsIntegerConstant(const std::string& str)
@@ -149,7 +184,11 @@ namespace iwbs::Globals
 
     bool IsStringConstant(const std::string& str)
     {
-        return str.front() == '"' && str.back() == '"';
+        bool containsQuote = std::any_of(str.begin() + 1, str.end() - 1, [](char c) {
+            return c == '"';
+        });
+
+        return str.front() == '"' && str.back() == '"' && !containsQuote;
     }
 
     bool IsBooleanConstant(const std::string& str)

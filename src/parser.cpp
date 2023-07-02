@@ -44,7 +44,6 @@ namespace iwbs
 
             if (result)
             {
-                std::cout << "Variable is added!" << std::endl;
                 variableContainer.pushVariable(variable);
             }
         }

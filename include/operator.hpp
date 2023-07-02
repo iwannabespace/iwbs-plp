@@ -14,6 +14,7 @@ namespace iwbs
             static bool Subtraction(const Variable& lhs, const Variable& rhs);
             static bool Multiplication(const Variable& lhs, const Variable& rhs);
             static bool Division(const Variable& lhs, const Variable& rhs);
+            static Token Conversion(const Token& lhs, const Token& rhs);
     };
 }
 

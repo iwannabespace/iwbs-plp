@@ -3,10 +3,12 @@
 
 #include "variable.hpp"
 #include "token.hpp"
+#include "line.hpp"
 #include "keywords.hpp"
 #include "error.hpp"
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace iwbs::Globals
 {
@@ -16,15 +18,16 @@ namespace iwbs::Globals
     bool IsValidIdentifier(const std::string& name);
     Variable::Type ResolveVariableType(const std::string& value);
     Token::Type ResolveTokenType(const std::string& value);
-    std::variant<int64_t, Error> ConvertToInteger(const std::string& str);
-    std::variant<double, Error> ConvertToFloat(const std::string& str);
-    std::variant<std::string, Error> ConvertToString(const std::string& str);
-    std::variant<bool, Error> ConvertToBoolean(const std::string& str);
+    std::optional<int64_t> ConvertToInteger(const std::string& str);
+    std::optional<double> ConvertToFloat(const std::string& str);
+    std::optional<std::string> ConvertToString(const std::string& str);
+    std::optional<bool> ConvertToBoolean(const std::string& str);
     bool IsConstant(const std::string& str);
     bool IsIntegerConstant(const std::string& str);
     bool IsFloatConstant(const std::string& str);
     bool IsStringConstant(const std::string& str);
     bool IsBooleanConstant(const std::string& str);
+    Line Evaluate(const Line& line);
     // Token ConvertIntegerTokenToFloat(const Token& token);
     // Token ConvertIntegerTokenToString(const Token& token);
     // Token ConvertIntegerTokenToBoolean(const Token& token);

@@ -96,40 +96,39 @@ namespace iwbs::Globals
         return Token::Type::Identifier;
     }
 
-    std::variant<int64_t, Error> ConvertToInteger(const std::string& str)
+    std::optional<int64_t> ConvertToInteger(const std::string& str)
     {
         bool isInteger = IsIntegerConstant(str);
 
         if (isInteger)
             return std::stoll(str);
         else 
-            return Error();
+            return std::nullopt;
     }
 
-    // Test this
-    std::variant<double, Error> ConvertToFloat(const std::string& str)
+    std::optional<double> ConvertToFloat(const std::string& str)
     {
         bool isFloat = IsFloatConstant(str);
 
         if (isFloat)
             return std::stod(str);
         else
-            return Error();
+            return std::nullopt;
     }
 
-    std::variant<std::string, Error> ConvertToString(const std::string& str)
+    std::optional<std::string> ConvertToString(const std::string& str)
     {
+        return {};
     }
 
-    // Test this
-    std::variant<bool, Error> ConvertToBoolean(const std::string& str)
+    std::optional<bool> ConvertToBoolean(const std::string& str)
     {
         bool isBoolean = IsBooleanConstant(str);
 
         if (isBoolean)
             return str == "true";
         else
-            return Error();
+            return std::nullopt;
     }
 
     bool IsConstant(const std::string& str)
@@ -140,6 +139,9 @@ namespace iwbs::Globals
 
     bool IsIntegerConstant(const std::string& str)
     {
+        if (str.length() == 0 || (str.length() == 1 && (str == "+" || str == "-")))
+            return false;
+
         bool fchar = (str.front() == '+' || str.front() == '-' || std::isdigit(str.front()));
 
         bool integer = std::all_of(str.begin() + 1, str.end(), [](char c) {
@@ -184,6 +186,9 @@ namespace iwbs::Globals
 
     bool IsStringConstant(const std::string& str)
     {
+        if (str.length() <= 1)
+            return false;
+
         bool containsQuote = std::any_of(str.begin() + 1, str.end() - 1, [](char c) {
             return c == '"';
         });

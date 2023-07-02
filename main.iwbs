@@ -1,2 +1,1 @@
-integer i = 100a;
-integer b = 0;
+integer test = 10 * 2 + 3 + 2.4 as integer;

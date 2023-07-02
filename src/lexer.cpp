@@ -7,8 +7,6 @@ namespace iwbs
     Lexer::Lexer(const FileReader& reader)
         : reader(reader)
     {
-        // Global Scope
-        //scopes.push_back(Scope());
     }
 
     Lexer::~Lexer()
@@ -26,7 +24,6 @@ namespace iwbs
 
         auto allLines = reader.data();
         size_t lineNumber = 1;
-        //size_t currentScope = 0;
         
         for (const std::string& lineStr : allLines)
         {
@@ -65,10 +62,6 @@ namespace iwbs
             throw "Index out of bounds for Lexer::lines container";
 
         return lines[index];
-    }
-
-    void Lexer::analyze()
-    {
     }
 
     Line Lexer::extractTokens(const std::string& str) const
@@ -124,7 +117,7 @@ namespace iwbs
             {
                 std::string value{current};
 
-                for (++i; (std::isalnum(str[i]) || str[i] == '.') && i < str.length(); i++)
+                for (++i; i < str.length() && (std::isalnum(str[i]) || str[i] == '.'); i++)
                 {
                     current = str[i];
                     value += current;
